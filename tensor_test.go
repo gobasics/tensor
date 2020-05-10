@@ -9,6 +9,31 @@ import (
 func TestAdd(t *testing.T) {
 	for k, v := range []struct {
 		data  []float64
+		delta []float64
+		want  []float64
+	}{
+		{[]float64{1, 2, 3}, []float64{2, 3, 4}, []float64{3, 5, 7}},
+		{[]float64{1, 2, 3}, []float64{3, 4, 5}, []float64{4, 6, 8}},
+		{[]float64{1, 2, 3}, []float64{4, 5, 6}, []float64{5, 7, 9}},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			a := New(3)
+			a.Set(v.data)
+			b := New(3)
+			b.Set(v.delta)
+			a.Add(b)
+			want := fmt.Sprintf("%v", v.want)
+			got := fmt.Sprintf("%v", a.data)
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}
+
+func TestAddScalar(t *testing.T) {
+	for k, v := range []struct {
+		data  []float64
 		delta float64
 		want  []float64
 	}{
@@ -19,7 +44,7 @@ func TestAdd(t *testing.T) {
 		t.Run(strconv.Itoa(k), func(t *testing.T) {
 			tensor := New(3)
 			tensor.data = v.data
-			tensor.Add(v.delta)
+			tensor.AddScalar(v.delta)
 			want := fmt.Sprintf("%v", v.want)
 			got := fmt.Sprintf("%v", tensor.data)
 			if want != got {

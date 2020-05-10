@@ -6,44 +6,52 @@ type Tensor struct {
 	dimensions []int
 }
 
-// Add adds delta to each element in Tensor t.
-func (t *Tensor) Add(delta float64) {
-	for k := range t.data {
-		t.data[k] += delta
+// AddScalar adds delta to each element in Tensor a.
+func (a *Tensor) AddScalar(delta float64) {
+	for k := range a.data {
+		a.data[k] += delta
 	}
 }
 
-// Set copies elements in data into Tensor t.
-func (t *Tensor) Set(data []float64) {
-	copy(t.data, data)
+// Add performs elementwise addition of Tensor delta to Tensor a.
+// Tensor delta should be of the dimensions as Tensor a
+func (a *Tensor) Add(delta *Tensor) {
+	for k := range a.data {
+		a.data[k] += delta.data[k]
+	}
 }
 
-// Dot calculates and returns the Dot Product of Tensor t and c.
-func (t *Tensor) Dot(c *Tensor) (dot float64) {
-	for k := range t.data {
-		dot += t.data[k] * c.data[k]
+// Set copies elements in data into Tensor a.
+func (a *Tensor) Set(data []float64) {
+	copy(a.data, data)
+}
+
+// Dot calculates and returns the Dot Product of Tensor a and b.
+func (a *Tensor) Dot(b *Tensor) (dot float64) {
+	for k := range a.data {
+		dot += a.data[k] * b.data[k]
 	}
 	return dot
 }
 
-// Calculates Tensor t's capacity from its dimensions.
-func (t *Tensor) size() (size int) {
+// size calculates Tensor a's capacity from its dimensions.
+func (a *Tensor) size() (size int) {
 	size = 1
-	for _, n := range t.dimensions {
+	for _, n := range a.dimensions {
 		size *= n
 	}
 	return size
 }
 
-// size returns the capacity of Tensor t.
-func (t *Tensor) Size() int {
-	return cap(t.data)
+// Size returns the capacity of Tensor a.
+func (a *Tensor) Size() int {
+	return cap(a.data)
 }
 
-// New creates and initializes a Tensor of dimensions.
-func New(dimensions ...int) *Tensor {
-	var t Tensor
-	t.dimensions = dimensions
-	t.data = make([]float64, t.size())
-	return &t
+// New creates and initializes a Tensor with n dimensions.
+func New(n ...int) *Tensor {
+	var a Tensor
+	a.dimensions = n
+	a.data = make([]float64, a.size())
+	return &a
 }
