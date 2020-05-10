@@ -50,6 +50,19 @@ func (a *Tensor) Dot(b *Tensor) (dot float64) {
 	return dot
 }
 
+// SameShape returns true when Tensor a is of the same shape as Tensor b.
+func (a *Tensor) SameShape(b *Tensor) bool {
+	if len(a.Shape) != len(b.Shape) {
+		return false
+	}
+	for k := range a.Shape {
+		if a.Shape[k] != b.Shape[k] {
+			return false
+		}
+	}
+	return true
+}
+
 // size calculates Tensor a's capacity from its dimensions.
 func (a *Tensor) size() (size int) {
 	return a.Shape.Size()
@@ -58,6 +71,13 @@ func (a *Tensor) size() (size int) {
 // Size returns the capacity of Tensor a.
 func (a *Tensor) Size() int {
 	return cap(a.Data)
+}
+
+// Schur performs Schur product on Tensor a and b and stores the result in Tensor a.
+func (a *Tensor) Schur(b *Tensor) {
+	for k := range a.Data {
+		a.Data[k] *= b.Data[k]
+	}
 }
 
 // Square performs an elementwise squaring of Tensor a.

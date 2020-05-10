@@ -123,6 +123,25 @@ func TestDot(t *testing.T) {
 	}
 }
 
+func TestSameShape(t *testing.T) {
+	for k, v := range []struct {
+		a    *Tensor
+		b    *Tensor
+		want bool
+	}{
+		{New(1, 2, 3), New(1, 2, 3), true},
+		{New(1, 2, 2), New(1, 2, 3), false},
+		{New(1, 2, 2, 3), New(1, 2, 3), false},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			got := v.a.SameShape(v.b)
+			if v.want != got {
+				t.Errorf("want %t, got %t", v.want, got)
+			}
+		})
+	}
+}
+
 func TestSize(t *testing.T) {
 	for k, v := range []struct {
 		dimensions []int
@@ -139,6 +158,34 @@ func TestSize(t *testing.T) {
 			got := tensor.Size()
 			if v.want != got {
 				t.Errorf("want %d, got %d", v.want, got)
+			}
+		})
+	}
+}
+
+func TestSchur(t *testing.T) {
+	for k, v := range []struct {
+		a    *Tensor
+		b    *Tensor
+		want *Tensor
+	}{
+		{
+			&Tensor{[]float64{1, 2, 3, 4}, Shape{2, 2}},
+			&Tensor{[]float64{2, 3, 4, 5}, Shape{2, 2}},
+			&Tensor{[]float64{2, 6, 12, 20}, Shape{2, 2}},
+		},
+		{
+			&Tensor{[]float64{2, 3, 4, 5}, Shape{2, 2}},
+			&Tensor{[]float64{3, 4, 5, 6}, Shape{2, 2}},
+			&Tensor{[]float64{6, 12, 20, 30}, Shape{2, 2}},
+		},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			v.a.Schur(v.b)
+			want := fmt.Sprintf("%+v", v.want.Data)
+			got := fmt.Sprintf("%+v", v.a.Data)
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
 			}
 		})
 	}
