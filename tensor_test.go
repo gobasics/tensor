@@ -81,6 +81,23 @@ func TestAt(t *testing.T) {
 	}
 }
 
+func TestClone(t *testing.T) {
+	for k, v := range []struct {
+		a    *Tensor
+		want *Tensor
+	}{
+		{&Tensor{Data: []float64{1, 2, 3, 4}, Shape: Shape{2, 2}}, &Tensor{Data: []float64{1, 2, 3, 4}, Shape: Shape{2, 2}}},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			want := fmt.Sprintf("%+v", v.want)
+			got := fmt.Sprintf("%+v", v.a.Clone())
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}
+
 func TestDot(t *testing.T) {
 	for k, v := range []struct {
 		a    []float64

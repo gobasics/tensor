@@ -6,13 +6,6 @@ type Tensor struct {
 	Shape Shape
 }
 
-// AddScalar adds delta to each element in Tensor a.
-func (a *Tensor) AddScalar(delta float64) {
-	for k := range a.Data {
-		a.Data[k] += delta
-	}
-}
-
 // Add performs elementwise addition of Tensor delta to Tensor a.
 // Tensor delta should be of the dimensions as Tensor a
 func (a *Tensor) Add(delta *Tensor) {
@@ -21,11 +14,27 @@ func (a *Tensor) Add(delta *Tensor) {
 	}
 }
 
+// AddScalar adds delta to each element in Tensor a.
+func (a *Tensor) AddScalar(delta float64) {
+	for k := range a.Data {
+		a.Data[k] += delta
+	}
+}
+
 // At returns the top level *Tensor at index.
 func (t *Tensor) At(index int) *Tensor {
 	a := index * t.Shape[1:].Size()
 	z := a + t.Shape[1:].Size()
 	return &Tensor{Data: t.Data[a:z], Shape: t.Shape[1:]}
+}
+
+// Clone makes and returns a copy of Tensor a
+func (a *Tensor) Clone() *Tensor {
+	var b Tensor
+	b.Data = make([]float64, len(a.Data))
+	copy(b.Data, a.Data)
+	b.Shape = a.Shape.Clone()
+	return &b
 }
 
 // Set copies elements in data into Tensor a.
