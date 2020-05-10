@@ -23,7 +23,7 @@ func TestAdd(t *testing.T) {
 			b.Set(v.delta)
 			a.Add(b)
 			want := fmt.Sprintf("%v", v.want)
-			got := fmt.Sprintf("%v", a.data)
+			got := fmt.Sprintf("%v", a.Data)
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
@@ -43,10 +43,37 @@ func TestAddScalar(t *testing.T) {
 	} {
 		t.Run(strconv.Itoa(k), func(t *testing.T) {
 			tensor := New(3)
-			tensor.data = v.data
+			tensor.Data = v.data
 			tensor.AddScalar(v.delta)
 			want := fmt.Sprintf("%v", v.want)
-			got := fmt.Sprintf("%v", tensor.data)
+			got := fmt.Sprintf("%v", tensor.Data)
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}
+
+func TestAt(t *testing.T) {
+	for k, v := range []struct {
+		at     int
+		tensor *Tensor
+		want   *Tensor
+	}{
+		{
+			0,
+			&Tensor{Data: []float64{5, 4, 2, 6, 7, 0, 3, 1}, Shape: Shape{2, 2, 2}},
+			&Tensor{Data: []float64{5, 4, 2, 6}, Shape: Shape{2, 2}},
+		},
+		{
+			1,
+			&Tensor{Data: []float64{5, 4, 2, 6, 7, 0, 3, 1}, Shape: Shape{2, 2, 2}},
+			&Tensor{Data: []float64{7, 0, 3, 1}, Shape: Shape{2, 2}},
+		},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			want := fmt.Sprintf("%v", v.want)
+			got := fmt.Sprintf("%v", v.tensor.At(v.at))
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
@@ -117,7 +144,7 @@ func TestSub(t *testing.T) {
 			b.Set(v.delta)
 			a.Sub(b)
 			want := fmt.Sprintf("%v", v.want)
-			got := fmt.Sprintf("%v", a.data)
+			got := fmt.Sprintf("%v", a.Data)
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
