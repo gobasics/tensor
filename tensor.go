@@ -48,6 +48,13 @@ func (a *Tensor) Size() int {
 	return cap(a.data)
 }
 
+// Sub performas an elementwise subtraction of Tensor b from Tensor a.
+func (a *Tensor) Sub(b *Tensor) {
+	for k := range b.data {
+		a.data[k] -= b.data[k]
+	}
+}
+
 // New creates and initializes a Tensor with n dimensions.
 func New(n ...int) *Tensor {
 	var a Tensor

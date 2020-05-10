@@ -99,3 +99,28 @@ func TestSize(t *testing.T) {
 		})
 	}
 }
+
+func TestSub(t *testing.T) {
+	for k, v := range []struct {
+		data  []float64
+		delta []float64
+		want  []float64
+	}{
+		{[]float64{1, 2, 3}, []float64{2, 3, 4}, []float64{-1, -1, -1}},
+		{[]float64{1, 2, 3}, []float64{3, 4, 5}, []float64{-2, -2, -2}},
+		{[]float64{1, 2, 3}, []float64{4, 5, 6}, []float64{-3, -3, -3}},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			a := New(3)
+			a.Set(v.data)
+			b := New(3)
+			b.Set(v.delta)
+			a.Sub(b)
+			want := fmt.Sprintf("%v", v.want)
+			got := fmt.Sprintf("%v", a.data)
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}
