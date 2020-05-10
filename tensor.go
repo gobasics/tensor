@@ -2,8 +2,8 @@ package tensor
 
 // Tensor is a datastructure that can store [1,n) dimensional float64 elements.
 type Tensor struct {
-	data       []float64
-	dimensions []int
+	data  []float64
+	shape Shape
 }
 
 // AddScalar adds delta to each element in Tensor a.
@@ -36,11 +36,7 @@ func (a *Tensor) Dot(b *Tensor) (dot float64) {
 
 // size calculates Tensor a's capacity from its dimensions.
 func (a *Tensor) size() (size int) {
-	size = 1
-	for _, n := range a.dimensions {
-		size *= n
-	}
-	return size
+	return a.shape.Size()
 }
 
 // Size returns the capacity of Tensor a.
@@ -58,7 +54,7 @@ func (a *Tensor) Sub(b *Tensor) {
 // New creates and initializes a Tensor with n dimensions.
 func New(n ...int) *Tensor {
 	var a Tensor
-	a.dimensions = n
+	a.shape = n
 	a.data = make([]float64, a.size())
 	return &a
 }
