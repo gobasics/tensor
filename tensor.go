@@ -60,6 +60,13 @@ func (a *Tensor) Size() int {
 	return cap(a.Data)
 }
 
+// Square performs an elementwise squaring of Tensor a.
+func (a *Tensor) Square() {
+	for k := range a.Data {
+		a.Data[k] *= a.Data[k]
+	}
+}
+
 // Sub performs an elementwise subtraction of Tensor b from Tensor a.
 func (a *Tensor) Sub(b *Tensor) {
 	for k := range b.Data {
