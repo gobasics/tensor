@@ -23,7 +23,7 @@ func TestAdd(t *testing.T) {
 			b.Set(v.delta)
 			a.Add(b)
 			want := fmt.Sprintf("%v", v.want)
-			got := fmt.Sprintf("%v", a.Data)
+			got := fmt.Sprintf("%v", a.Get())
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
@@ -46,7 +46,7 @@ func TestAddScalar(t *testing.T) {
 			tensor.Data = v.data
 			tensor.AddScalar(v.delta)
 			want := fmt.Sprintf("%v", v.want)
-			got := fmt.Sprintf("%v", tensor.Data)
+			got := fmt.Sprintf("%v", tensor.Get())
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
@@ -182,8 +182,8 @@ func TestSchur(t *testing.T) {
 	} {
 		t.Run(strconv.Itoa(k), func(t *testing.T) {
 			v.a.Schur(v.b)
-			want := fmt.Sprintf("%+v", v.want.Data)
-			got := fmt.Sprintf("%+v", v.a.Data)
+			want := fmt.Sprintf("%+v", v.want.Get())
+			got := fmt.Sprintf("%+v", v.a.Get())
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
@@ -205,7 +205,7 @@ func TestSquare(t *testing.T) {
 			a.Set(v.a)
 			a.Square()
 			want := fmt.Sprintf("%+v", v.want)
-			got := fmt.Sprintf("%+v", a.Data)
+			got := fmt.Sprintf("%+v", a.Get())
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}
@@ -230,7 +230,7 @@ func TestSub(t *testing.T) {
 			b.Set(v.delta)
 			a.Sub(b)
 			want := fmt.Sprintf("%v", v.want)
-			got := fmt.Sprintf("%v", a.Data)
+			got := fmt.Sprintf("%v", a.Get())
 			if want != got {
 				t.Errorf("want %s, got %s", want, got)
 			}

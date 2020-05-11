@@ -37,6 +37,11 @@ func (a *Tensor) Clone() *Tensor {
 	return &b
 }
 
+// Get returns a slice of Tensor a's elements.
+func (a *Tensor) Get() []float64 {
+	return a.Data
+}
+
 // Set copies elements in data into Tensor a.
 func (a *Tensor) Set(data []float64) {
 	copy(a.Data, data)
