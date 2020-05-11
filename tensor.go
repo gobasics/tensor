@@ -22,7 +22,7 @@ func (a *Tensor) AddScalar(delta float64) {
 }
 
 // At returns the top level *Tensor at index.
-func (t *Tensor) At(index int) *Tensor {
+func (t *Tensor) At(index uint64) *Tensor {
 	a := index * t.Shape[1:].Size()
 	z := a + t.Shape[1:].Size()
 	return &Tensor{Data: t.Data[a:z], Shape: t.Shape[1:]}
@@ -64,13 +64,13 @@ func (a *Tensor) SameShape(b *Tensor) bool {
 }
 
 // size calculates Tensor a's capacity from its dimensions.
-func (a *Tensor) size() (size int) {
+func (a *Tensor) size() (size uint64) {
 	return a.Shape.Size()
 }
 
 // Size returns the capacity of Tensor a.
-func (a *Tensor) Size() int {
-	return cap(a.Data)
+func (a *Tensor) Size() uint64 {
+	return uint64(cap(a.Data))
 }
 
 // Schur performs Schur product on Tensor a and b and stores the result in Tensor a.
@@ -95,7 +95,7 @@ func (a *Tensor) Sub(b *Tensor) {
 }
 
 // New creates and initializes a Tensor with n dimensions.
-func New(n ...int) *Tensor {
+func New(n ...uint64) *Tensor {
 	var a Tensor
 	a.Shape = n
 	a.Data = make([]float64, a.size())

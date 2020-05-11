@@ -1,7 +1,7 @@
 package tensor
 
 // Shape holds dimensions of a Tensor
-type Shape []int
+type Shape []uint64
 
 // Clone makes and returns a copy of Shape a.
 func (a Shape) Clone() Shape {
@@ -11,10 +11,10 @@ func (a Shape) Clone() Shape {
 }
 
 // Size calculates the Tensor capacity of Shape a
-func (a Shape) Size() (size int) {
+func (a Shape) Size() (size uint64) {
 	size = 1
 	for _, n := range a {
-		size *= n
+		size *= uint64(n)
 	}
 	return size
 }
