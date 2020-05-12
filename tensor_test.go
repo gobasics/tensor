@@ -237,3 +237,21 @@ func TestSub(t *testing.T) {
 		})
 	}
 }
+
+func TestTranspose(t *testing.T) {
+	for k, v := range []struct {
+		a, want *Tensor
+	}{
+		{
+			&Tensor{[]float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, Shape{3, 4}},
+			&Tensor{[]float64{0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11}, Shape{4, 3}}},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			want := fmt.Sprintf("%+v", v.want)
+			got := fmt.Sprintf("%+v", v.a.Transpose())
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}

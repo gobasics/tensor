@@ -99,6 +99,22 @@ func (a *Tensor) Sub(b *Tensor) {
 	}
 }
 
+// Transpose flips Tensor a over its diagonal.
+func (a *Tensor) Transpose() *Tensor {
+	b := New(a.Shape...)
+	b.Shape[0], b.Shape[1] = a.Shape[1], a.Shape[0]
+	n := b.Shape[2:].Size()
+	var i, j, k uint64
+	for i = 0; i < b.Shape[0]; i++ {
+		for j = 0; j < b.Shape[1]; j++ {
+			m := (j * b.Shape[0]) + i
+			copy(b.Data[k:k+n], a.Data[m:m+n])
+			k++
+		}
+	}
+	return b
+}
+
 // New creates and initializes a Tensor with n dimensions.
 func New(n ...uint64) *Tensor {
 	var a Tensor
