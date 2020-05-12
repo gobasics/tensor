@@ -37,22 +37,17 @@ func (a *Tensor) Clone() *Tensor {
 	return &b
 }
 
-// Get returns a slice of Tensor a's elements.
-func (a *Tensor) Get() []float64 {
-	return a.Data
-}
-
-// Set copies elements in data into Tensor a.
-func (a *Tensor) Set(data []float64) {
-	copy(a.Data, data)
-}
-
 // Dot calculates and returns the Dot Product of Tensor a and b.
 func (a *Tensor) Dot(b *Tensor) (dot float64) {
 	for k := range a.Data {
 		dot += a.Data[k] * b.Data[k]
 	}
 	return dot
+}
+
+// Get returns a slice of Tensor a's elements.
+func (a *Tensor) Get() []float64 {
+	return a.Data
 }
 
 // SameShape returns true when Tensor a is of the same shape as Tensor b.
@@ -68,6 +63,18 @@ func (a *Tensor) SameShape(b *Tensor) bool {
 	return true
 }
 
+// Schur performs Schur product on Tensor a and b and stores the result in Tensor a.
+func (a *Tensor) Schur(b *Tensor) {
+	for k := range a.Data {
+		a.Data[k] *= b.Data[k]
+	}
+}
+
+// Set copies elements in data into Tensor a.
+func (a *Tensor) Set(data []float64) {
+	copy(a.Data, data)
+}
+
 // size calculates Tensor a's capacity from its dimensions.
 func (a *Tensor) size() (size uint64) {
 	return a.Shape.Size()
@@ -76,13 +83,6 @@ func (a *Tensor) size() (size uint64) {
 // Size returns the capacity of Tensor a.
 func (a *Tensor) Size() uint64 {
 	return uint64(cap(a.Data))
-}
-
-// Schur performs Schur product on Tensor a and b and stores the result in Tensor a.
-func (a *Tensor) Schur(b *Tensor) {
-	for k := range a.Data {
-		a.Data[k] *= b.Data[k]
-	}
 }
 
 // Square performs an elementwise squaring of Tensor a.
