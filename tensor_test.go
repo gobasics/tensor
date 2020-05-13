@@ -100,24 +100,31 @@ func TestClone(t *testing.T) {
 
 func TestDot(t *testing.T) {
 	for k, v := range []struct {
-		a    []float64
-		b    []float64
-		want float64
+		a    *Tensor
+		b    *Tensor
+		want *Tensor
 	}{
-		{[]float64{1, 2, 3}, []float64{2, 3, 4}, 20},
-		{[]float64{1, 2, 3}, []float64{3, 4, 5}, 26},
-		{[]float64{1, 2, 3}, []float64{4, 5, 6}, 32},
+		{
+			&Tensor{[]float64{1, 2, 3, 4, 5, 6}, Shape{2, 3}},
+			&Tensor{[]float64{7, 8, 9, 10, 11, 12}, Shape{3, 2}},
+			&Tensor{[]float64{58, 64, 139, 154}, Shape{2, 2}},
+		},
+		{
+			&Tensor{[]float64{1, 2, 3}, Shape{1, 3}},
+			&Tensor{[]float64{2, 3, 4}, Shape{3, 1}},
+			&Tensor{[]float64{20}, Shape{1, 1}},
+		},
+		{
+			&Tensor{[]float64{1, 2, 3}, Shape{1, 3}},
+			&Tensor{[]float64{2, 3, 4, 5, 6, 7}, Shape{3, 2}},
+			&Tensor{[]float64{28, 34}, Shape{1, 2}},
+		},
 	} {
 		t.Run(strconv.Itoa(k), func(t *testing.T) {
-			a := New(3)
-			a.Set(v.a)
-
-			b := New(3)
-			b.Set(v.b)
-
-			got := a.Dot(b)
-			if v.want != got {
-				t.Errorf("want %g, got %g", v.want, got)
+			want := fmt.Sprintf("%+v", v.want)
+			got := fmt.Sprintf("%+v", v.a.Dot(v.b))
+			if want != got {
+				t.Errorf("want %s, got %s", want, got)
 			}
 		})
 	}

@@ -38,11 +38,20 @@ func (a *Tensor) Clone() *Tensor {
 }
 
 // Dot calculates and returns the Dot Product of Tensor a and b.
-func (a *Tensor) Dot(b *Tensor) (dot float64) {
-	for k := range a.Data {
-		dot += a.Data[k] * b.Data[k]
+func (a *Tensor) Dot(b *Tensor) *Tensor {
+	c := New(a.Shape[0], b.Shape[1])
+	var n int
+	var aR, bC, aC uint64
+	for aR = 0; aR < a.Shape[0]; aR++ {
+		for bC = 0; bC < b.Shape[1]; bC++ {
+			for aC = 0; aC < a.Shape[1]; aC++ {
+				i, j := aC+(a.Shape[1]*aR), bC+(b.Shape[1]*aC)
+				c.Data[n] += a.Data[i] * b.Data[j]
+			}
+			n++
+		}
 	}
-	return dot
+	return c
 }
 
 // Get returns a slice of Tensor a's elements.
