@@ -118,6 +118,9 @@ func (a *Tensor) Transpose() *Tensor {
 // New creates and initializes a Tensor with n dimensions.
 func New(n ...uint64) *Tensor {
 	var a Tensor
+	if len(n) < 2 {
+		n = append(Shape{1}, n...)
+	}
 	a.Shape = n
 	a.Data = make([]float64, a.size())
 	return &a

@@ -147,6 +147,8 @@ func TestSize(t *testing.T) {
 		dimensions []uint64
 		want       uint64
 	}{
+		{[]uint64{}, 1},
+		{[]uint64{1}, 1},
 		{[]uint64{1, 1}, 1},
 		{[]uint64{2, 2}, 4},
 		{[]uint64{3, 3}, 9},
