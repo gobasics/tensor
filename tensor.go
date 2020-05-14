@@ -130,7 +130,7 @@ func New(n ...uint64) *Tensor {
 	if len(n) < 2 {
 		n = append(Shape{1}, n...)
 	}
-	a.Shape = n
+	a.Shape = append(Shape{}, n...)
 	a.Data = make([]float64, a.size())
 	return &a
 }
