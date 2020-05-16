@@ -21,11 +21,11 @@ func (a *Tensor) AddScalar(delta float64) {
 	}
 }
 
-// At returns the top level *Tensor at index.
-func (t *Tensor) At(index uint64) *Tensor {
-	a := index * t.Shape[1:].Size()
-	z := a + t.Shape[1:].Size()
-	return &Tensor{Data: t.Data[a:z], Shape: t.Shape[1:]}
+// At returns the top level *Tensor at index k.
+func (a *Tensor) At(k uint64) *Tensor {
+	n := a.Shape[1:].Size()
+	i := k * n
+	return &Tensor{Data: a.Data[i : i+n], Shape: a.Shape[1:].Clone()}
 }
 
 // Clone makes and returns a copy of Tensor a
