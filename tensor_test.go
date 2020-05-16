@@ -70,6 +70,11 @@ func TestAt(t *testing.T) {
 			&Tensor{Data: []float64{5, 4, 2, 6, 7, 0, 3, 1}, Shape: Shape{2, 2, 2}},
 			&Tensor{Data: []float64{7, 0, 3, 1}, Shape: Shape{2, 2}},
 		},
+		{
+			1,
+			&Tensor{Data: []float64{5, 4, 2, 6, 7, 0, 3, 1}, Shape: Shape{2, 4}},
+			&Tensor{Data: []float64{7, 0, 3, 1}, Shape: Shape{1, 4}},
+		},
 	} {
 		t.Run(strconv.Itoa(k), func(t *testing.T) {
 			want := fmt.Sprintf("%v", v.want)
