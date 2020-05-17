@@ -61,6 +61,15 @@ func (a *Tensor) Get() []float64 {
 	return a.Data
 }
 
+// Rank returns the number of dimensions of Tensor a.
+func (a *Tensor) Rank() int {
+	n := len(a.Shape)
+	if a.Shape[0] != 1 && a.Shape[n-1] != 1 {
+		return n
+	}
+	return n - 1
+}
+
 // SameShape returns true when Tensor a is of the same shape as Tensor b.
 func (a *Tensor) SameShape(b *Tensor) bool {
 	if len(a.Shape) != len(b.Shape) {

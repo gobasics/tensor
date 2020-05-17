@@ -135,6 +135,26 @@ func TestDot(t *testing.T) {
 	}
 }
 
+func TestRank(t *testing.T) {
+	for k, v := range []struct {
+		a    *Tensor
+		want int
+	}{
+		{New(1), 1},
+		{New(1, 2), 1},
+		{New(1, 2, 3), 2},
+		{New(1, 2, 3, 4), 3},
+		{New(2, 3, 4, 5), 4},
+	} {
+		t.Run(strconv.Itoa(k), func(t *testing.T) {
+			got := v.a.Rank()
+			if v.want != got {
+				t.Errorf("want %d, got %d", v.want, got)
+			}
+		})
+	}
+}
+
 func TestSameShape(t *testing.T) {
 	for k, v := range []struct {
 		a    *Tensor
@@ -257,8 +277,17 @@ func TestTranspose(t *testing.T) {
 		a, want *Tensor
 	}{
 		{
+			&Tensor{[]float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, Shape{1, 12}},
+			&Tensor{[]float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, Shape{12, 1}},
+		},
+		{
+			&Tensor{[]float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, Shape{12, 1}},
+			&Tensor{[]float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, Shape{1, 12}},
+		},
+		{
 			&Tensor{[]float64{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, Shape{3, 4}},
-			&Tensor{[]float64{0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11}, Shape{4, 3}}},
+			&Tensor{[]float64{0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11}, Shape{4, 3}},
+		},
 	} {
 		t.Run(strconv.Itoa(k), func(t *testing.T) {
 			want := fmt.Sprintf("%+v", v.want)
